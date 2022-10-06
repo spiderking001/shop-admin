@@ -7,10 +7,10 @@ export function login(username, password) {
     });
 }
 
-export function getInfo(token) {
-    return axios.post("/admin/getinfo", {
-        params: {
-            token
-        }
-    });
+export function getInfo() {
+    return axios.post("/admin/getinfo");
+}
+//
+export function logout() {
+    return axios.post("/admin/logout")
 }
