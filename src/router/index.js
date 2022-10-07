@@ -1,9 +1,16 @@
 import {createRouter, createWebHashHistory} from "vue-router";
 import Index from "../views/Index.vue";
+import Admin from "../layouts/Admin.vue";
 
 const routes = [
     {
-        path: '/', component: Index,meta:{title:'后台首页'}
+        path: '/',
+        component: Admin,
+        children: [{
+            path:'/',
+            component:Index,
+            meta:{title:'后台首页'},
+        }]
     },
     {
         path: '/login', component: () => import("../views/Login.vue"),meta:{title:'登陆页'}
