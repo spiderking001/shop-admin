@@ -7,17 +7,23 @@ const routes = [
         path: '/',
         component: Admin,
         children: [{
-            path:'/',
-            component:Index,
-            meta:{title:'后台首页'},
-        }]
+            path: '/',
+            component: Index,
+            meta: {title: '后台首页'},
+        },
+            {
+                path: '/goods/list',
+                component: ()=>import ('../views/goods/List.vue'),
+                meta: {title: '商品管理'},
+            }]
     },
     {
-        path: '/login', component: () => import("../views/Login.vue"),meta:{title:'登陆页'}
+        path: '/login', component: () => import("../views/Login.vue"), meta: {title: '登陆页'}
     },
     {
         path: '/:pathMatch(.*)*', component: () => import("../views/404.vue")
-    }
+    },
+
 ]
 
 
