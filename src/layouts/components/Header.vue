@@ -35,10 +35,8 @@
             <span class="flex items-center text-light-50 mr-4">
                <el-avatar class="mr-4" :size="25" :src="$store.state.user.avater"/>
                 {{ $store.state.user.username }}
-          <el-icon class="el-icon--right ">
-            <arrow-down/>
-         </el-icon>
-    </span>
+            <el-icon class="el-icon--right"><arrow-down/></el-icon>
+            </span>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item command="rePassword">修改密码</el-dropdown-item>
@@ -48,15 +46,46 @@
       </el-dropdown>
     </div>
   </div>
+  <!--  <el-drawer v-model="showDrawer"-->
+  <!--             title="修改密码"-->
+  <!--             size="45%"-->
+  <!--             :close-on-click-modal="false">-->
+
+  <!--  </el-drawer>-->
+  <FormDrawer ref="formDrawerRef" title="修改密码" destroy-on-close @submit="onSubmit">
+    <el-form ref="fromRef" :rules="rules" :model="form" label-width="80px">
+      <el-form-item prop="oldpassword" label="旧密码">
+        <el-input v-model="form.oldpassword"
+                  placeholder="请输入旧密码">
+        </el-input>
+      </el-form-item>
+
+      <el-form-item prop="password" label="新密码">
+        <el-input v-model="form.password"
+                  placeholder="请输入密码"
+                  show-password
+        >
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="repassword" label="确认密码">
+        <el-input v-model="form.repassword"
+                  placeholder="请输入确认密码"
+                  show-password
+        >
+
+        </el-input>
+      </el-form-item>
+
+    </el-form>
+    <!--  <div style="height: 1000px"></div>-->
+  </FormDrawer>
 
 </template>
 
 <script setup>
-import {showModal, toast} from "@/composables/util";
-import {logout} from "@/api/manager";
-import {useRouter} from "vue-router";
-import {useStore} from "vuex";
+import FormDrawer from "@/components/FormDrawer.vue";
 import {useFullscreen} from '@vueuse/core'
+import {useRepassword,useLogout} from "@/composables/useManager";
 
 const {
   //是否全屏
@@ -65,9 +94,19 @@ const {
   toggle
 } = useFullscreen()
 
+const {
+  formDrawerRef,
+  form,
+  rules,
+  fromRef,
+  onSubmit,
+  openRePasswordForm,
+} = useRepassword()
 
-const router = useRouter();
-const store = useStore();
+const {
+  btnLogout
+} = useLogout()
+
 
 const handCommand = (c) => {
   switch (c) {
@@ -75,7 +114,8 @@ const handCommand = (c) => {
       btnLogout()
       break;
     case "rePassword":
-      console.log('修改密码')
+      // showDrawer.value = true
+      openRePasswordForm()
       break
   }
 }
@@ -83,20 +123,6 @@ const handCommand = (c) => {
 //刷新
 const refresh = () => location.reload()
 
-
-function btnLogout() {
-  showModal('是否要退出登录').then(() => {
-    logout().finally(() => {
-      //清除用户token
-      //清除当前用户状态
-      store.dispatch("logout")
-      //跳转回登录页
-      router.push('/login')
-      //提示退出成功
-      toast('退出成功')
-    })
-  })
-}
 </script>
 
 <style scoped>

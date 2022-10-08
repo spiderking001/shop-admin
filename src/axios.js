@@ -1,6 +1,7 @@
 import axios from "axios";
 import {toast} from "@/composables/util";
 import {getToken} from "@/composables/auth";
+import store from "@/store";
 
 const service = axios.create({
     baseURL: "/api"
@@ -11,7 +12,7 @@ service.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
 
     //往header头自动添加token
-    const token =getToken()
+    const token = getToken()
     if (token) {
         config.headers['token'] = token
     }
@@ -28,7 +29,13 @@ service.interceptors.response.use(function (response) {
     return response.data.data;
 }, function (error) {
     // 对响应错误做点什么
-    toast(error.response.data.msg||'登陆失败',"error")
+
+    const msg = error.response.data.msg || '请求失败'
+    console.log(msg)
+    if (msg == "非法token，请先登录！") {
+        store.dispatch("logout").finally(() => location.reload())
+    }
+    toast(msg, "error")
 
     return Promise.reject(error);
 });
