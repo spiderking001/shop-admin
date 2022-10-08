@@ -5,7 +5,7 @@
     </el-header>
 
     <el-container>
-      <el-aside width="250px">
+      <el-aside :width="$store.state.asideWidth">
         <Aside/>
       </el-aside>
 
@@ -27,5 +27,8 @@ import Main from "./components/Main.vue";
 </script>
 
 <style scoped>
+.el-aside{
+  transition: all 0.2s;
 
+}
 </style>

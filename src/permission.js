@@ -1,4 +1,4 @@
-import router from './router'
+import {router,addRoutes} from './router'
 import {getToken} from '@/composables/auth'
 import {toast,showLoading,hideLoading} from '@/composables/util'
 import store from './store'
@@ -29,15 +29,18 @@ router.beforeEach(async (to, from, next) => {
     }
 
     //如果用户登陆了,自动获取用户信息,并自动存到vuex中
-
+    let hasNewRoutes=false
     if(token){
-         await store.dispatch('getInfo')
+         let {menus}=await store.dispatch('getInfo')
+        //动态添加路由
+        hasNewRoutes= addRoutes(menus)
+
     }
 
     //设置页面标题
     let title=(to.meta.title?to.meta.title:'后台管理系统')
     document.title=title
-    next()
+    hasNewRoutes?next(to.fullPath):next()
 })
 
 //全局后置守卫

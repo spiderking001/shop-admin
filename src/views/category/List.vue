@@ -1,8 +1,5 @@
 <template>
-<div>
-  商品管理
-
-</div>
+<h2>分类</h2>
 </template>
 
 <script>

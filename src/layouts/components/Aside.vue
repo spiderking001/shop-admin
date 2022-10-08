@@ -1,6 +1,13 @@
 <template>
-  <div class="f-menu">
-    <el-menu default-active="2" class="border-0" @select="handleSelect">
+  <div class="f-menu" :style="{width:$store.state.asideWidth}">
+    <el-menu
+        :default-active="defaultActive"
+        :collapse="isCollapse"
+        default-active="2" class="border-0"
+        @select="handleSelect"
+        :collapse-transition="false"
+        unique-opened
+    >
       <template v-for="(item,index) in asideMenu" :key="index">
         <el-sub-menu v-if="item.child && item.child.length>0" :index="item.name">
           <template #title>
@@ -10,7 +17,7 @@
             <span>{{ item.name }}</span>
           </template>
 
-          <el-menu-item :index="item2.frontpath" v-for="(item2,index2) in item.child" :key="index2">
+          <el-menu-item v-for="(item2,index2) in item.child" :key="index2" :index="item2.frontpath">
             <el-icon>
               <component :is="item2.icon"></component>
             </el-icon>
@@ -18,7 +25,7 @@
           </el-menu-item>
         </el-sub-menu>
 
-        <el-menu-item  v-else :index="item.frontpath">
+        <el-menu-item v-else :index="item.frontpath">
           <el-icon>
             <component :is="item.icon"></component>
           </el-icon>
@@ -32,29 +39,24 @@
 </template>
 
 <script setup>
-import {useRouter} from "vue-router";
-const router = useRouter();
-const asideMenu = [{
-  "name": "后台面板",
-  "icon": "help",
-  "child": [{
-    "name": "主控台",
-    "frontpath": "/",
-    "icon": "home-filled",
-  }]
-},
-  {
-    "name": "商城管理",
-    "icon": "shopping-bag",
-    "child": [{
-      "name": "商品管理",
-      "frontpath": "/goods/list",
-      "icon": "shopping-cart-full",
-    }]
-  }
-]
+import {computed, ref} from "vue";
+import {useRouter, useRoute} from "vue-router";
+import {useStore} from "vuex"
 
-const handleSelect = (e)=>{
+const router = useRouter();
+const store = useStore()
+const route = useRoute()
+
+//默认选中
+const defaultActive = ref(route.path)
+
+//是否折叠
+const isCollapse = computed(() => !(store.state.asideWidth == '250px'))
+
+
+const asideMenu =computed(() => store.state.menus)
+
+const handleSelect = (e) => {
   // console.log(e)
   router.push(e)
 }
@@ -62,12 +64,16 @@ const handleSelect = (e)=>{
 
 <style scoped>
 .f-menu {
-  width: 250px;
+
   top: 64px;
   bottom: 0;
   left: 0;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   @apply shadow-lg fixed bg-light-50;
-
+  transition: all 0.2s;
+}
+.f-menu::-webkit-scrollbar {
+  width: 0;
 }
 </style>

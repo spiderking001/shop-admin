@@ -4,8 +4,9 @@
            <el-icon class="mr-1"><HelpFilled/></el-icon>
           three编程
         </span>
-    <el-icon class="icon-btn">
-      <Fold/>
+    <el-icon class="icon-btn" @click="$store.commit('handleAside')">
+      <Fold v-if="$store.state.asideWidth=='250px'"/>
+      <Expand v-else/>
     </el-icon>
     <el-icon class="icon-btn" @click="refresh">
       <el-tooltip
@@ -33,7 +34,7 @@
       </el-icon>
       <el-dropdown class="dropdown mr-4" @command="handCommand">
             <span class="flex items-center text-light-50 mr-4">
-               <el-avatar class="mr-4" :size="25" :src="$store.state.user.avater"/>
+               <el-avatar class="mr-4" :size="25" :src="$store.state.myImg"/>
                 {{ $store.state.user.username }}
             <el-icon class="el-icon--right"><arrow-down/></el-icon>
             </span>
@@ -46,12 +47,7 @@
       </el-dropdown>
     </div>
   </div>
-  <!--  <el-drawer v-model="showDrawer"-->
-  <!--             title="修改密码"-->
-  <!--             size="45%"-->
-  <!--             :close-on-click-modal="false">-->
 
-  <!--  </el-drawer>-->
   <FormDrawer ref="formDrawerRef" title="修改密码" destroy-on-close @submit="onSubmit">
     <el-form ref="fromRef" :rules="rules" :model="form" label-width="80px">
       <el-form-item prop="oldpassword" label="旧密码">
@@ -85,7 +81,7 @@
 <script setup>
 import FormDrawer from "@/components/FormDrawer.vue";
 import {useFullscreen} from '@vueuse/core'
-import {useRepassword,useLogout} from "@/composables/useManager";
+import {useRepassword, useLogout} from "@/composables/useManager";
 
 const {
   //是否全屏
