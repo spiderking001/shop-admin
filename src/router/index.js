@@ -2,35 +2,6 @@ import {createRouter, createWebHashHistory} from "vue-router";
 import Index from "../views/Index.vue";
 import Admin from "../layouts/Admin.vue";
 
-// const routes = [
-//     {
-//         path: '/',
-//         component: Admin,
-//         children: [{
-//             path: '/',
-//             component: Index,
-//             meta: {title: '后台首页'},
-//         },
-//             {
-//                 path: '/goods/list',
-//                 component: ()=>import ('../views/goods/List.vue'),
-//                 meta: {title: '商品管理'},
-//             },
-//             {
-//                 path: '/category/list',
-//                 component: ()=>import ('../views/category/List.vue'),
-//                 meta: {title: '分类列表'},
-//             }]
-//     },
-//     {
-//         path: '/login', component: () => import("../views/Login.vue"), meta: {title: '登陆页'}
-//     },
-//     {
-//         path: '/:pathMatch(.*)*', component: () => import("../views/404.vue")
-//     },
-//
-// ]
-
 
 //默认路由,所有用户共享
 const routes = [
@@ -67,7 +38,49 @@ const asyncRoutes = [
         name:"/category/list",
         component: () => import ('../views/category/List.vue'),
         meta: {title: '分类列表'},
-    }
+    },
+    {
+        path: '/user/list',
+        name:"/user/list",
+        component: () => import ('../views/user/list.vue'),
+        meta: {title: '用户列表'},
+    },
+    {
+        path: '/order/list',
+        name:"/order/list",
+        component: () => import ('../views/order/list.vue'),
+        meta: {title: '订单列表'},
+    },
+    {
+        path: '/comment/list',
+        name:"/comment/list",
+        component: () => import ('../views/comment/list.vue'),
+        meta: {title: '评价列表'},
+    },
+    {
+        path: '/image/list',
+        name:"/image/list",
+        component: () => import ('../views/image/list.vue'),
+        meta: {title: '图库列表'},
+    },
+    {
+        path: '/notice/list',
+        name:"/notice/list",
+        component: () => import ('../views/notice/list.vue'),
+        meta: {title: '公告列表'},
+    },
+    {
+        path: '/setting/base',
+        name:"/setting/base",
+        component: () => import ('../views/setting/base.vue'),
+        meta: {title: '配置列表'},
+    },
+    {
+        path: '/coupon/list',
+        name:"/coupon/list",
+        component: () => import ('../views/coupon/list.vue'),
+        meta: {title: '优惠券列表'},
+    },
 ]
 
 export const router = createRouter({

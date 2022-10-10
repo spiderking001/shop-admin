@@ -125,6 +125,7 @@ const refresh = () => location.reload()
 .f-header {
   @apply flex bg-indigo-700 text-light-50 fixed top-0 left-0 right-0 h-12 items-center justify-between px-4;
   height: 64px;
+  z-index:1000
 }
 
 .logo {

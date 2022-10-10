@@ -14,7 +14,6 @@ export default defineConfig({
     },
     server: {
         proxy: {
-
             // 选项写法
             '/api': {
                 target: 'http://ceshi13.dishait.cn',
