@@ -17,6 +17,7 @@ const store = createStore({
             asideWidth:"250px",
 
             menus:[],
+
             ruleNames:[],
 
         }

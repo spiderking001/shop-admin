@@ -11,7 +11,10 @@
         <span class="line"></span>
       </div>
 
-      <el-form ref="fromRef" :rules="rules" :model="form" class="w-[250px]">
+      <el-form ref="fromRef"
+               :rules="rules"
+               :model="form"
+               class="w-[250px]">
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名">
             <template #prefix>

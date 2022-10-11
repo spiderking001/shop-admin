@@ -10,3 +10,4 @@ export function getStatistics2() {
 export function getStatistics3(type) {
     return axios.get("/admin/statistics3?type="+type);
 }
+
