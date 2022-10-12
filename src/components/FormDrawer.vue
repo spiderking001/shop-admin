@@ -3,7 +3,7 @@
     <el-drawer v-model="showDrawer"
                :title="title"
                :size="size"
-               :close-on-click-modal="false"
+               :close-on-click-modal="true"
                :destroy-on-close="destroyOnClose">
       <div class="formDrawer">
         <div class="body">

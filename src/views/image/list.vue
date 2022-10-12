@@ -2,10 +2,11 @@
   <el-container class="bg-white rounded" :style="{height:(h+'px')}">
     <el-header class="image-header">
       <el-button type="primary" size="small" @click="handleOpenCreate">新增图片分类</el-button>
+      <el-button type="warning" size="small" @click="handleOpenLoad">上传图片</el-button>
     </el-header>
     <el-container>
-      <ImageAside ref="imageAsideRef"/>
-      <ImageMain/>
+      <ImageAside ref="imageAsideRef" @change="handleAsideChange"/>
+      <ImageMain ref="imageMainRef"/>
     </el-container>
   </el-container>
 
@@ -15,32 +16,42 @@
 import ImageAside from "@/components/ImageAside.vue";
 import ImageMain from "@/components/ImageMain.vue";
 import {ref} from "vue";
-const widowHeight = window.innerHeight||document.body.clientHeight
-const h=widowHeight-64-44
 
-const imageAsideRef=ref(null)
+const widowHeight = window.innerHeight || document.body.clientHeight
+const h = widowHeight - 64 - 44
 
-const handleOpenCreate=()=>{
+const imageAsideRef = ref(null)
+const imageMainRef = ref(null)
+
+const handleOpenCreate = () => {
   imageAsideRef.value.handleCreate()
+}
+
+const handleAsideChange = (imageClassId) => {
+  imageMainRef.value.loadData(imageClassId)
+}
+const handleOpenLoad= () => {
+  imageMainRef.value.openUploadFile()
 }
 </script>
 
 <style scoped>
-.image-header{
+.image-header {
   border-bottom: 1px solid #eeeeee;
   @apply flex items-center
 }
 
-.image-aside{
+.image-aside {
   border-right: 1px solid #eeeeee;
   position: relative;
- 
+
 }
-.image-main{
+
+.image-main {
   position: relative;
 }
 
-.image-aside .top,.image-main .top{
+.image-aside .top, .image-main .top {
   position: absolute;
   top: 0;
   right: 0;
@@ -48,9 +59,10 @@ const handleOpenCreate=()=>{
   bottom: 50px;
   overflow-y: auto;
 }
-.image-aside .bottom,.image-main .bottom{
+
+.image-aside .bottom, .image-main .bottom {
   position: absolute;
-  bottom:0;
+  bottom: 0;
   height: 50px;
   left: 0;
   right: 0;
