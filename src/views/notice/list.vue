@@ -61,34 +61,22 @@ import {ref, reactive, computed} from "vue";
 import {getNoticeList, addNoticeList, editNoticeList, deleteNoticeList} from "@/api/notice";
 import FromDrawer from "@/components/FormDrawer.vue";
 import {toast} from "@/composables/util";
+import {useInitTable} from "@/composables/useCommon";
+import {getAdminList} from "@/api/manager";
 
-const loading = ref(false)
 
-
-//分页
-const currentPage = ref(1)
-const total = ref(0)
-const limit = ref(10)
-
-const tableData = ref([])
-
-//获得数据
-function getData(p = null) {
-  if (typeof p == "number") {
-    currentPage.value = p
-  }
-  loading.value = true
-  getNoticeList(currentPage.value).then(res => {
-    // console.log(res)
-    tableData.value = res.list
-    total.value = res.totalCount
-
-  }).finally(() => {
-    loading.value = false
-  })
+const {
+  tableData,
+  loading,
+  currentPage,
+  total,
+  limit,
+  getData
 }
-
-getData()
+    = useInitTable(
+    {
+      getList: getNoticeList
+    })
 
 
 //表单部分

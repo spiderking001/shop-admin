@@ -35,7 +35,7 @@ defineProps({
 const emit = defineEmits(["success"])
 
 const uploadSuccess = (response, uploadFile, uploadFiles)=>{
-  console.log(response);
+  // console.log(response);
   emit("success",{
     response, uploadFile, uploadFiles
   })

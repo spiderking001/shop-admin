@@ -4,7 +4,8 @@
       <!--      <div ></div>-->
       <el-row :gutter="10">
         <el-col :span="6" :offset="0" v-for="(item,index) in list" :key="index">
-          <el-card shadow="hover" class="relative mb-3" :body-style="{'padding':0}">
+          <el-card shadow="hover" class="relative mb-3" :body-style="{'padding':0}"
+                   :class="{'border-blue-500':item.checked}">
             <el-image :src="item.url" fit="cover" class="h-[150px]" style="width: 100%"
                       :preview-src-list="[item.url]"
                       :initial-index="0"
@@ -12,6 +13,10 @@
             </el-image>
             <div class="imageTitle">{{ item.name }}</div>
             <div class="flex  items-center justify-center p-2">
+              <el-checkbox v-model="item.checked"
+                           @change="handleChooseCheck(item)"
+                           v-if="openChoose"/>
+
               <el-button type="primary" size="small" text @click="handleEdit(item)">重命名</el-button>
               <el-popconfirm title="是否要删除该图片?"
                              confirmButtonText="确认"
@@ -44,7 +49,7 @@
 
 <script setup>
 import {getImageList, updateImageList, deleteImageList} from "@/api/image.js";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {showPrompt, toast} from "@/composables/util.js";
 import UploadFile from "@/components/UploadFile.vue";
 
@@ -71,7 +76,10 @@ function getData(p = null) {
   loading.value = true
   getImageList(image_class_id.value, currentPage.value).then(res => {
     total.value = res.totalCount
-    list.value = res.list
+    list.value = res.list.map(o => {
+      o.checked = false
+      return o
+    })
   }).finally(() => {
     loading.value = false
   })
@@ -112,6 +120,30 @@ const loadData = (id) => {
 
 //上传成功刷新页面
 const handleSuccess = () => getData(1)
+
+defineProps({
+  openChoose: {
+    type: Boolean,
+    default: false
+
+  }
+})
+
+//选择图片
+const emit = defineEmits(['choose'])
+const checkedImage = computed(() => {
+  return list.value.filter(o => o.checked)
+})
+
+//判断是否在选中一张
+const handleChooseCheck = (item) => {
+  if (checkedImage.value.length > 1) {
+    item.checked = false
+    toast("最多只能选择一张图片", "warning")
+  }
+  emit('choose', checkedImage.value)
+}
+
 
 defineExpose({
   loadData,

@@ -81,6 +81,12 @@ const asyncRoutes = [
         component: () => import ('../views/coupon/list.vue'),
         meta: {title: '优惠券列表'},
     },
+    {
+        path: '/manager/list',
+        name:"/manager/list",
+        component: () => import ('../views/manager/list.vue'),
+        meta: {title: '管理员管理'},
+    },
 ]
 
 export const router = createRouter({
